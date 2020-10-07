@@ -11,7 +11,6 @@ public class SpringListener extends AbstractTestExecutionListener {
 
 	@Override
 	public void afterTestClass(TestContext testContext) throws Exception {
-		testContext.getApplicationContext().getBeansOfType(WebDriver.class).get("webdriver").close();
 		testContext.getApplicationContext().getBeansOfType(WebDriver.class).get("webdriver").quit();
 	}
 }
