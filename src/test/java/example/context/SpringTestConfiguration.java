@@ -17,12 +17,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 
 import example.util.LoggerUtil;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @Configuration
 @ComponentScan(basePackages = "example")
 @PropertySources({ @PropertySource("classpath:config/test.properties") })
 public class SpringTestConfiguration {
-
 
 	@Bean
 	public CustomScopeConfigurer customScopeConfigurer() {
@@ -36,12 +36,14 @@ public class SpringTestConfiguration {
 	public WebDriver driver(@Value("${browser:chrome}") String browser) {
 		LoggerUtil.log("Got browsername from propertyfile : " + browser);
 		WebDriver driver = null;
-		if("Chrome".equalsIgnoreCase(browser)) {
-			System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER_PATH);
+		if ("Chrome".equalsIgnoreCase(browser)) {
+//			System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER_PATH);
+			WebDriverManager.chromedriver().setup();
 			ChromeOptions ops = new ChromeOptions();
 			ops.addArguments("disable-infobars");
 			driver = new ChromeDriver(ops);
 		} else {
+			WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();
 		}
 		driver.manage().window().maximize();
